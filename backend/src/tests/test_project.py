@@ -1,5 +1,5 @@
 """
-Sanity checks that the project is wired up. These pass as handed over.
+Sanity checks that the project is wired up. 
 """
 import pytest
 from django.urls import reverse

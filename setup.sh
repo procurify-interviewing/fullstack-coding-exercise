@@ -82,7 +82,7 @@ and is yours to write. Everything else passes. See backend/README.md.
 
 Next:
 
-  make dev
+  make run
 
   Frontend  http://localhost:5173
   API       http://localhost:8000/api/purchase-requests/

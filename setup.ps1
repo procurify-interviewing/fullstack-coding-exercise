@@ -64,7 +64,7 @@ Write-Host "One test fails: tests/test_purchase_request_api.py is an unimplement
 Write-Host "and is yours to write. Everything else passes. See backend/README.md."
 Write-Host ""
 Write-Host "Next:"
-Write-Host "  make dev"
+Write-Host "  make run"
 Write-Host ""
 Write-Host "  Frontend  http://localhost:5173"
 Write-Host "  API       http://localhost:8000/api/purchase-requests/"

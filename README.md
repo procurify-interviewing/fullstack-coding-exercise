@@ -1,7 +1,11 @@
-# Purchase Requests - interview exercise
+# Interview Exercise - Purchase Requests
 
 A small Django + React project. It runs, but the API endpoint is a stub and the React app is a
 shell. The brief is in `EXERCISE.md`.
+
+## Goal
+Implement the API on the `backend/` project according to the problem statements and build a React component 
+in the `frontend/` project to consume the API locally. 
 
 ## Prerequisites
 
@@ -23,8 +27,8 @@ Windows (PowerShell):
 .\setup.ps1
 ```
 
-Either script creates `backend/.venv`, installs the Python dependencies, runs migrations, seeds
-sample data, runs the tests, and installs the frontend's npm dependencies. It takes a couple of
+The automated scripts creates `backend/.venv`, installs the Python dependencies, runs migrations, seeds
+sample data, and runs the tests, and installs the frontend's npm dependencies. It takes a couple of
 minutes on a normal connection.
 
 Manual setup:
@@ -45,10 +49,10 @@ npm install
 ## Run
 
 ```bash
-make dev
+make run
 ```
 
-That starts both servers in one terminal; Ctrl-C stops both.
+Starts both frontend and backend servers
 
 | | |
 | --- | --- |
@@ -60,7 +64,7 @@ That is the Django stub, reached through the dev server. The React app calls rel
 `/api/...` paths and Vite proxies them to Django, so there is no CORS to configure and no API
 base URL to set.
 
-To run one half on its own: `make backend` or `make frontend`.
+To run one half on its own: `make run-backend` or `make run-frontend`.
 
 
 ## Troubleshooting
@@ -71,4 +75,4 @@ To run one half on its own: `make backend` or `make frontend`.
 - `Port 8000 is already in use` - `python manage.py runserver 8001`, and point `vite.config.ts`'s proxy target at the same port.
 - `Port 5173 is already in use` - `npm run dev --prefix frontend -- --port 5174`.
 - PowerShell refuses to run `setup.ps1` - run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first, then retry.
-- For a clean slate, delete `backend/db.sqlite3` and re-run `make migrate seed`.
+- For a clean slate, delete `backend/db.sqlite3` and re-run `./setup.sh`.
