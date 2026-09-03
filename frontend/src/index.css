@@ -1,11 +1,18 @@
 :root {
   color-scheme: light dark;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
   line-height: 1.5;
 }
 
 body {
+  height: 100%;
   margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1.2rem;
 }
 
 main {
