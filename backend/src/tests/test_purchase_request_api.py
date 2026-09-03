@@ -1,7 +1,7 @@
 """
 End-to-end tests for GET /api/purchase-requests/.
 
-The brief is in EXERCISE.md. These tests fail until both the endpoint and the
+The brief is in backend/EXERCISE.md. These tests fail until both the endpoint and the
 tests themselves are written; that is deliberate.
 """
 import pytest

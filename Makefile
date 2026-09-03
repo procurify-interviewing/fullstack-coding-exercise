@@ -1,4 +1,4 @@
-.PHONY: setup run run-backend run-frontend test-backend test-frontend
+.PHONY: setup reset reset-backend reset-frontend run run-backend run-frontend test-backend test-frontend
 
 # Entry-point scripts in .venv/bin bake in an absolute shebang when the venv is
 # created, so commands are invoked as modules through the interpreter instead.
@@ -11,9 +11,24 @@ MANAGE := cd backend/src && ../$(PYTHON) manage.py
 # pytest.ini lives in backend/ and puts src/ on the path.
 PYTEST := cd backend && $(PYTHON) -m pytest
 
+# yarn.lock is the frontend lockfile, so scripts run through yarn.
+YARN := yarn --cwd frontend
+
 # Installs both halves, migrates and seeds the database.
 setup:
 	./setup.sh
+
+# Deletes everything setup.sh creates so that `make setup` starts from a clean
+# slate. Only generated artifacts are removed; tracked files are untouched.
+reset: reset-backend reset-frontend
+	@echo "Reset complete. Run 'make setup' to rebuild."
+
+reset-backend:
+	rm -rf backend/.venv backend/db.sqlite3 backend/.pytest_cache
+	find backend -name __pycache__ -type d -prune -exec rm -rf {} +
+
+reset-frontend:
+	rm -rf frontend/node_modules frontend/dist
 
 # Runs the API and the dev server together.
 run:
@@ -23,11 +38,11 @@ run-backend:
 	$(MANAGE) runserver 8000
 
 run-frontend:
-	npm run dev --prefix frontend
+	$(YARN) dev
 
 test-backend:
 	$(PYTEST)
 
-# The frontend has no test runner yet; type checking is the available check.
 test-frontend:
-	npm run typecheck --prefix frontend
+	$(YARN) typecheck
+	$(YARN) test

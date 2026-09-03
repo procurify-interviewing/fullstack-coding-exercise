@@ -1,9 +1,11 @@
 """
 Minimal settings for the interview exercise. SQLite, no admin, no sessions.
 """
+
 from pathlib import Path
 
-# Repository backend root (the directory above src/), where db.sqlite3 lives.
+# Repository backend/ root (the directory above src/),
+# where db.sqlite3 lives.
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 SECRET_KEY = "interview-exercise-not-a-real-secret"

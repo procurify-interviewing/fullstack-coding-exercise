@@ -2,7 +2,7 @@
 # One-shot setup for macOS / Linux. Run from the repo root:
 #   ./setup.sh
 # Sets up the backend (venv, dependencies, migrations, seed data, tests)
-# and the frontend (npm dependencies).
+# and the frontend (yarn dependencies, type check, tests).
 set -euo pipefail
 
 cd "$(dirname "$0")"
@@ -27,8 +27,8 @@ PY="$(find_python)" || {
 }
 echo "Using $($PY --version) at $(command -v "$PY")"
 
-if ! command -v npm >/dev/null 2>&1; then
-  echo "Node 20 or newer is required and npm was not found on PATH." >&2
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node 20 or newer is required and node was not found on PATH." >&2
   echo "Install it from https://nodejs.org/ and re-run ./setup.sh" >&2
   exit 1
 fi
@@ -39,6 +39,14 @@ if [ "$NODE_MAJOR" -lt 20 ]; then
   exit 1
 fi
 echo "Using node $(node --version) at $(command -v node)"
+
+# frontend/yarn.lock is the frontend lockfile, so the install runs through yarn.
+if ! command -v yarn >/dev/null 2>&1; then
+  echo "yarn is required and was not found on PATH." >&2
+  echo "Install it with 'corepack enable' or 'npm install -g yarn', then re-run ./setup.sh" >&2
+  exit 1
+fi
+echo "Using yarn $(yarn --version) at $(command -v yarn)"
 
 echo
 echo "Backend..."
@@ -71,7 +79,12 @@ fi
 echo
 echo "Frontend..."
 cd "$REPO_ROOT"
-npm install --prefix frontend
+yarn --cwd frontend install --frozen-lockfile
+
+# The type check and the test suite are the two checks the exercise ships with;
+# running them here surfaces a broken toolchain at setup rather than later.
+yarn --cwd frontend typecheck
+yarn --cwd frontend test
 
 cat <<MSG
 

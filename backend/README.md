@@ -1,22 +1,12 @@
-# Backend Exercise
+# Backend Project
 
-## Part 1: Build an Approve-aware Purchase Requests API
-Build an approver-aware Purchase Requests API. Your API lets clients retrieve purchase requests over HTTP.
+A Django application backed by SQLite, Django REST Framework is installed and configured, but using it is optional.
 
-The endpoint returns the purchase requests the current user is allowed to see:
-- requests they created, or
-- requests where they are an approver.		
+See exercise brief in `[EXERCISE.md](EXERCISE.md)`. 
 
-Models are predefined and there are some data already seeded in the SQLite database.
+## Setup the project
 
-Make decisions on missing requirements - talk through and explain decisions made. Aim for implementation as if this is used in production.
-
-
-# Project Setup
-
-A Django application backed by SQLite. It serves the JSON API that the frontend consumes.
-
-Django REST Framework is installed and configured, using it is optional.
+From project root, `make setup` , which creates the virtualenv, installs dependencies, runs migrations, and seeds sample data.
 
 ## Running the project
 
@@ -28,34 +18,22 @@ cd src
 python manage.py runserver 8000
 ```
 
-The `make` targets in the repo root (`make run-backend`, `make test-backend`) do this for you
-and do not need the virtualenv activated.
+The `make` targets in the repo root (`make run-backend`, `make test-backend`) do this for you and do not need the virtualenv activated. 
 
 ## Database
 
-SQLite, in a single file at `backend/db.sqlite3`. Nothing to install or run - SQLite ships with
-Python. The file is created by `python manage.py migrate`.
+`backend/db.sqlite3` database file, created by `python manage.py migrate`.
 
 ```bash
 rm db.sqlite3
 cd src && python manage.py migrate && python manage.py seed_data
 ```
 
-`BASE_DIR` in `settings.py` resolves to this directory.
-
 ## Tests
 
-Everything lives in `src/tests/` and runs under pytest:
-
-- `factories.py`: helpers for building test data
-- `conftest.py`: test fixtures
-
-Run them from this directory, or with `make test-backend` from the repo root:
+Run pytests from this directory, or with `make test-backend` from the repo root:
 
 ```bash
 pytest src/tests/
 ```
 
-## The exercise
-
-You may add files and packages. If you want to change the models, say so first.

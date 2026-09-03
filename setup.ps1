@@ -2,7 +2,7 @@
 #   .\setup.ps1
 # If scripts are blocked:  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 # Sets up the backend (venv, dependencies, migrations, seed data, tests)
-# and the frontend (npm dependencies).
+# and the frontend (yarn dependencies, type check, tests).
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 $repoRoot = $PSScriptRoot
@@ -19,14 +19,20 @@ if (-not $py) {
 }
 Write-Host "Using: $(Invoke-Expression "$py --version")"
 
-if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-    Write-Error "Node 20 or newer is required and npm was not found on PATH. Install it from https://nodejs.org/ and re-run .\setup.ps1"
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+    Write-Error "Node 20 or newer is required and node was not found on PATH. Install it from https://nodejs.org/ and re-run .\setup.ps1"
 }
 $nodeMajor = [int](node -p "process.versions.node.split('.')[0]")
 if ($nodeMajor -lt 20) {
     Write-Error "Node 20 or newer is required; found $(node --version). Install it from https://nodejs.org/ and re-run .\setup.ps1"
 }
 Write-Host "Using node: $(node --version)"
+
+# frontend/yarn.lock is the frontend lockfile, so the install runs through yarn.
+if (-not (Get-Command yarn -ErrorAction SilentlyContinue)) {
+    Write-Error "yarn is required and was not found on PATH. Install it with 'corepack enable' or 'npm install -g yarn', then re-run .\setup.ps1"
+}
+Write-Host "Using yarn: $(yarn --version)"
 
 Write-Host ""
 Write-Host "Backend..."
@@ -55,7 +61,12 @@ if ($pytestStatus -gt 1) {
 Write-Host ""
 Write-Host "Frontend..."
 Set-Location $repoRoot
-npm install --prefix frontend
+yarn --cwd frontend install --frozen-lockfile
+
+# The type check and the test suite are the two checks the exercise ships with;
+# running them here surfaces a broken toolchain at setup rather than later.
+yarn --cwd frontend typecheck
+yarn --cwd frontend test
 
 Write-Host ""
 Write-Host "Setup complete."
