@@ -40,12 +40,14 @@ Set-Location (Join-Path $repoRoot "backend")
 if (-not (Test-Path ".venv")) { Invoke-Expression "$py -m venv .venv" }
 & .\.venv\Scripts\Activate.ps1
 
+Write-Host "Installing dependencies.."
 python -m pip install --quiet --upgrade pip
 python -m pip install --quiet -r requirements.txt
 
 Set-Location "src"
 python manage.py migrate --verbosity 0
 python manage.py seed_data
+Write-Host "Data seeded: users, purchase requests, approvals"
 
 Set-Location ".."
 # The API test is an unimplemented stub, so a failing test here is expected.
@@ -71,10 +73,9 @@ yarn --cwd frontend test
 Write-Host ""
 Write-Host "Setup complete."
 Write-Host ""
-Write-Host "One test fails: tests/test_purchase_request_api.py is an unimplemented stub"
-Write-Host "and is yours to write. Everything else passes. See backend/README.md."
+Write-Host "Ready to start exercise in backend/EXERCISE.md and frontend/EXERCISE.md."
 Write-Host ""
-Write-Host "Next:"
+Write-Host "To run both backend/frontend project:"
 Write-Host "  make run"
 Write-Host ""
 Write-Host "  Frontend  http://localhost:5173"

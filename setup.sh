@@ -57,12 +57,14 @@ fi
 # shellcheck disable=SC1091
 source .venv/bin/activate
 
+echo "Installing dependencies.."
 python -m pip install --quiet --upgrade pip
 python -m pip install --quiet -r requirements.txt
 
 cd src
 python manage.py migrate --verbosity 0
 python manage.py seed_data
+echo "Data seeded: users, purchase requests, approvals"
 
 cd ..
 # The API test is an unimplemented stub, so a failing test here is expected.
@@ -90,10 +92,9 @@ cat <<MSG
 
 Setup complete.
 
-One test fails: tests/test_purchase_request_api.py is an unimplemented stub
-and is yours to write. Everything else passes. See backend/README.md.
+Ready to start exercise in backend/EXERCISE.md and frontend/EXERCISE.md.
 
-Next:
+To run both backend/frontend project:
 
   make run
 
